@@ -1,10 +1,12 @@
 import discord
 import asyncio
 import random
+import os
 from config import token
 from discord.ext import commands
 from discord.ext.commands import Bot
 
+token = os.environ["token"]
 bot = commands.Bot(command_prefix="?")
 
 sloth_images = ["https://i.imgur.com/74ketp5.jpg", "https://i.imgur.com/27n3GOp.gif", "https://i.imgur.com/Y273oWN.gif",
