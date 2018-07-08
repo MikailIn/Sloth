@@ -2,7 +2,6 @@ import discord
 import asyncio
 import random
 import os
-from config import token
 from discord.ext import commands
 from discord.ext.commands import Bot
 
