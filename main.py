@@ -50,7 +50,6 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("------")
-    print(discord.version_info)
 
 
 @bot.event
