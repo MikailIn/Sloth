@@ -104,4 +104,4 @@ async def suggest(ctx, *, message):
     await bot.say("Yes sir, I heard your calls and will relay it to my master :eggplant:")
 
 
-bot.run(str(token))
+bot.run(token)
