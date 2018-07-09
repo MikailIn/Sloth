@@ -7,6 +7,7 @@ from discord.ext.commands import Bot
 
 token = os.environ["bot_token"]
 bot = commands.Bot(command_prefix="?")
+bot.remove_command("help")
 
 sloth_images = ["https://i.imgur.com/74ketp5.jpg", "https://i.imgur.com/27n3GOp.gif", "https://i.imgur.com/Y273oWN.gif",
                 "https://i.imgur.com/ngEzEx3.jpg", "https://i.imgur.com/I1705Pl.jpg", "https://i.imgur.com/8NDtJIn.jpg",
