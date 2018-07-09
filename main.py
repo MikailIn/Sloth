@@ -102,4 +102,20 @@ async def suggest(ctx, *, message):
     await bot.say("Yes sir, I heard your calls and will relay it to my master :eggplant:")
 
 
+@bot.command(pass_context=True)
+async def help(ctx):
+    p = ctx.prefix
+    em_owner = discord.Embed(colour=0xF4B042)
+    em_owner.set_author(name="Bot owner commands")
+    em_owner.add_field(name="{}addtodo something".format(p), value="Adds something to your to do channel", inline=False)
+    await bot.say(embed=em_owner)
+    em_user = discord.Embed(colour=0xF4B042)
+    em_user.set_author(name="User commands")
+    em_user.add_field(name="{}ping".format(p), value="Returns Pong", inline=False)
+    em_user.add_field(name="{}say something".format(p), value="Returns something", inline=False)
+    em_user.add_field(name="{}sloth".format(p), value="Returns an image or a gif of a sloth", inline=False)
+    em_user.add_field(name="{}suggest something".format(p), value="Adds something to your suggestion channel", inline=False)
+    await bot.say(embed=em_user)
+
+
 bot.run(token)
