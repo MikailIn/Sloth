@@ -50,6 +50,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("------")
+    await bot.change_presence(game=discord.Game(name="with my dingdong"))
 
 
 @bot.event
@@ -65,7 +66,7 @@ async def on_message(message):
 @bot.command()
 async def ping():
     """ping pong"""
-    await bot.say("Pong!")
+    await bot.say(":ping_pong: Pong!")
 
 
 @bot.command(no_pm=True)
