@@ -53,7 +53,7 @@ async def sloth():
 
 
 @bot.command(pass_context=True)
-@check_if_owner()
+@checks.check_if_owner()
 async def addtodo(ctx, *, message):
     """add a to do task to your to do channel"""
     await bot.send_message(discord.Object(id="465513192865660956"), message)
