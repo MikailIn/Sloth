@@ -74,6 +74,15 @@ async def suggest(ctx, *, message):
 
 
 @bot.command(pass_context=True)
+async def report(ctx, *, message):
+    """command to suggest something"""
+    author = ctx.message.author
+    output = "{} - {}".format(message, author)
+    await bot.send_message(discord.Object(id="471825826103689218"), output)
+    await bot.say("Me feed report fakking noop idi nahui :middle_finger:")
+
+
+@bot.command(pass_context=True)
 async def help(ctx):
     """help command"""
     message = ctx.message.content.lower()
@@ -107,17 +116,16 @@ async def help(ctx):
         await bot.say(embed=em)
     if message == "?help information" or message == "?help info":
         em = discord.Embed(title="Miscellaneous commands", colour=0xF4B042)
+        em.add_field(name="?git", value="posts the github repository of the bot", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
         em.add_field(name="?help", value="opens help", inline=True)
         em.add_field(name="\u200b", value="\u200b", inline=True)
         em.add_field(name="\u200b", value="\u200b", inline=True)
         em.add_field(name="?invite", value="gives the bot invite link", inline=True)
         em.add_field(name="\u200b", value="\u200b", inline=True)
-        em.add_field(name="\u200b", value="\u200b", inline=True)
         em.add_field(name="?suggest", value="suggest something to the bot owner", inline=True)
         em.add_field(name="\u200b", value="\u200b", inline=True)
-        em.add_field(name="\u200b", value="\u200b", inline=True)
-        em.add_field(name="?git", value="posts the github repository of the bot", inline=True)
-        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="?report", value="report something to the bot owner", inline=True)
         em.add_field(name="\u200b", value="\u200b", inline=True)
         await bot.say(embed=em)
 
