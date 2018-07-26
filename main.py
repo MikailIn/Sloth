@@ -3,23 +3,13 @@ import asyncio
 import random
 import os
 from discord.ext import commands
-from discord.ext.commands import Bot
-from slothimages import sloth_images
+from data.slothimages import sloth_images
+from cogs.utils import checks
+
 
 token = os.environ["bot_token"]
 bot = commands.Bot(command_prefix="?")
 bot.remove_command("help")
-
-
-
-def check_if_owner():
-    """checks if the user is the owner of the bot"""
-    def predicate(ctx):
-        if ctx.message.author.id == "183234193281646592":
-            return True
-        else:
-            return False
-    return commands.check(predicate)
 
 
 @bot.event
@@ -82,18 +72,97 @@ async def suggest(ctx, *, message):
 
 @bot.command(pass_context=True)
 async def help(ctx):
-    p = ctx.prefix
-    em_owner = discord.Embed(colour=0xF4B042)
-    em_owner.set_author(name="Bot owner commands")
-    em_owner.add_field(name="{}addtodo something".format(p), value="Adds something to your to do channel", inline=False)
-    await bot.say(embed=em_owner)
-    em_user = discord.Embed(colour=0xF4B042)
-    em_user.set_author(name="User commands")
-    em_user.add_field(name="{}ping".format(p), value="Returns Pong", inline=False)
-    em_user.add_field(name="{}say something".format(p), value="Returns something", inline=False)
-    em_user.add_field(name="{}sloth".format(p), value="Returns an image or a gif of a sloth", inline=False)
-    em_user.add_field(name="{}suggest something".format(p), value="Adds something to your suggestion channel", inline=False)
-    await bot.say(embed=em_user)
+    """help command"""
+    message = ctx.message.content.lower()
+    if message == "?help":
+        em = discord.Embed(title="Sloth commands", colour=0xF4B042)
+        em.add_field(name="Moderation", value="Some moderation commands for the mods.", inline=False)
+        em.add_field(name="Miscellaneous", value="Misc commands to have fun with!", inline=False)
+        em.add_field(name="Information", value="Get information about the bot here!", inline=False)
+        em.set_footer(text="Type ?help <mod/misc/...> to see the list of commands")
+        await bot.say(embed=em)
+    if message == "?help moderation" or message == "?help mod":
+        em = discord.Embed(title="Moderation commands", colour=0xF4B042)
+        em.add_field(name="?ban", value="ban the specified user", inline=True)
+        em.add_field(name="\u200b", value="requires ban members permission", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="?kick", value="kick the specified user", inline=True)
+        em.add_field(name="\u200b", value="requires kick members permission", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        await bot.say(embed=em)
+    if message == "?help miscellaneous" or message == "?help misc":
+        em = discord.Embed(title="Miscellaneous commands", colour=0xF4B042)
+        em.add_field(name="?ping", value="returns pong!", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="?say", value="repeats after you", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="?sloth", value="posts an image of a cute sloth", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        await bot.say(embed=em)
+    if message == "?help information" or message == "?help info":
+        em = discord.Embed(title="Miscellaneous commands", colour=0xF4B042)
+        em.add_field(name="?help", value="opens help", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="?invite", value="gives the bot invite link", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="?suggest", value="suggest something to the bot owner", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="?git", value="posts the github repository of the bot", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        em.add_field(name="\u200b", value="\u200b", inline=True)
+        await bot.say(embed=em)
+
+
+@bot.command()
+async def invite():
+    """gives the bot invite link"""
+    url = "https://discordapp.com/api/oauth2/authorize?client_id=462878456598888449&permissions=469888118&scope=bot"
+    await bot.say("**My invite link:**\n{}".format(url))
+
+
+@bot.command(pass_context=True)
+@commands.has_permissions(kick_members=True)
+@commands.bot_has_permissions(kick_members=True)
+async def kick(ctx, username: discord.User):
+    """kicks someone"""
+    server = ctx.message.server
+    message = ctx.message.content.split()
+    reason = " ".join(message[2:])
+    if reason == "":
+        await bot.send_message(username, "You were kicked from **{}**.".format(server))
+    else:
+        await bot.say(reason)
+        await bot.send_message(username, "You were kicked from **{}**. Reason:\n*{}*".format(server, reason))
+    await bot.kick(username)
+    await bot.say("{} got kicked from the server. Bye-bye :wave:".format(username))
+
+
+@bot.command(pass_context=True)
+@commands.has_permissions(ban_members=True)
+@commands.bot_has_permissions(ban_members=True)
+async def ban(ctx, username: discord.User):
+    """bans someone"""
+    server = ctx.message.server
+    message = ctx.message.content.split()
+    reason = " ".join(message[2:])
+    if reason == "":
+        await bot.send_message(username, "You were banned from **{}**.".format(server))
+    else:
+        await bot.say(reason)
+        await bot.send_message(username, "You were banned from **{}**. Reason:\n*{}*".format(server, reason))
+    await bot.ban(username, delete_message_days=0)
+    await bot.say("{} got banned from the server. Poor soul, they did not deserve this (╯°□°）╯︵ ┻━┻".format(username))
+
+
+@bot.command()
+async def git():
+    await bot.say("**The github repository of the bot:**\nhttps://www.github.com/MrVestacus/Sloth")
 
 
 bot.run(token)
