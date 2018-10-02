@@ -31,6 +31,8 @@ async def on_message(message):
         await bot.send_message(message.channel, "no u")
     if message.content.lower() == "kms" and not message.author.bot:
         await bot.send_message(message.channel, "do it")
+    if message.content.lower() == "fuck me" and not message.author.bot:
+        await bot.add_reaction(message, "🍆")
     await bot.process_commands(message)
 
 
